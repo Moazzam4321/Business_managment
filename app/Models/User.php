@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -18,6 +19,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = [];
+
+    public function tokens()
+    {
+        return $this->hasMany(User::class);
+    }  
    
     public static function create_user($request,$user_image="",$role = 'is_user')
     {
@@ -28,12 +34,19 @@ class User extends Authenticatable
             'dob' => $request->dob,
             'profile_picture' => $user_image,
             'password' => '',
+            'email_verified_at' => false,
             'role' => $role
         ]);
     }
 
-    public function tokens()
+    public static function update_user($user_id,$password)
     {
-        return $this->hasMany(User::class);
+        return User::where('id',$user_id)->update(['password'=>Hash::make($password),
+                                                    'email_verified_at'=> true ]);
     }   
+
+    public static function find_login_user($user_email)
+    {
+        return User::where('email',$user_email)->first();
+    }  
 }

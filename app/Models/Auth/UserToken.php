@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -12,6 +13,11 @@ class Usertoken extends Model
     use HasFactory;
     protected $table= 'user_tokens';
     protected $guarded = [];
+
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function user_token($user_id,$token_type)
     { 
@@ -24,8 +30,14 @@ class Usertoken extends Model
       
     }
 
-    public function user() 
+    public static function is_token_exist($token)
     {
-        return $this->belongsTo(User::class);
+     return @Usertoken::where('token', $token)
+                      ->where('created_at','>=',Carbon::now()->subMinutes(60))->first();
+    }
+
+    public static function delete_token($token_id)
+    {
+      Usertoken::where('id',$token_id)->delete();
     }
 }

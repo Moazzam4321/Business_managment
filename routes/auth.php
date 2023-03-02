@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class,'signUp'])->name('signUp');
 Route::post('/verify/account', [AuthController::class,'verifyAccount']);
+Route::post('/login', [AuthController::class,'login']);
