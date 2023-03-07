@@ -14,6 +14,7 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+       
         return [
             'id'=> data_get($this,'id',''),
             'first_name'=> data_get($this,'first_name',''),

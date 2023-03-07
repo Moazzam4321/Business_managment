@@ -25,12 +25,12 @@ class User extends Authenticatable
         return $this->hasMany(User::class);
     }  
    
-    public static function create_user($request,$user_image="",$role = 'is_user')
+    public static function create_user($request,$user_email,$user_image="",$role = 'is_user')
     {
       return  User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'email' => $request->email,
+            'email' => $user_email,
             'dob' => $request->dob,
             'profile_picture' => $user_image,
             'password' => '',
@@ -45,7 +45,7 @@ class User extends Authenticatable
                                                     'email_verified_at'=> true ]);
     }   
 
-    public static function find_login_user($user_email)
+    public static function find_user_by_email($user_email)
     {
         return User::where('email',$user_email)->first();
     }  

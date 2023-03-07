@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class SignUpRequest extends FormRequest
 {
@@ -32,7 +33,7 @@ class SignUpRequest extends FormRequest
             'first_name'  =>  'required|string|min:3|max:50',
             'last_name'   =>  'required|string|min:3|max:50',
             'email'       =>  'required|email',
-            'dob'         =>  'nullable|string',
+            'dob'         =>  'nullable|date_format:Y-m-d|before:today',
             'profile_pic' =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048' 
         ];
     }
