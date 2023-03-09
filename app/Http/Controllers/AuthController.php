@@ -17,7 +17,15 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    //
+    /**
+     * 1. This method first get input paramters
+     * 2. Check if any file in input paramter if exist save in local storage and return its path by calling function "Helper::save_image_in_local_path"
+     * 3. Then check input email is against admin or not 
+     * 4. Then save record and register new user against its role
+     * 5. Generate token and send mail with endpoint and token attach in it
+     * @param Request $request
+     * @return Illuminate\Http\Response
+     */
     public function signUp(SignUpRequest $request)
     {
         $user_email=strtolower(trim(data_get($request,'email',null)));
@@ -42,6 +50,14 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * 1. This function check token first
+     * 2. if exist then update user account with input password 
+     * 3. Delete input token form database
+     * @param Request $request
+     * @return Illuminate\Http\Response
+     */
+
     public function verifyAccount(RequestsAccountVerificationRequest $request)
     {
         $response = ['error' => true, 'message' => 'Invalid token or token expired'];
@@ -56,7 +72,16 @@ class AuthController extends Controller
 
        return $response;
     }
-
+   
+    /**
+     * 1. This functiuon get input paramters first
+     * 2. Check user exist in database against input email 
+     * 3. Ifexist then match password if matched 
+     * 4. Generate token and save in database
+     * 5. Call Api resource to return format data against this user
+     * @param Request $request
+     * @return Illuminate\Http\Response
+     */
     public function login(LoginRequest $request)
     {
         $response = ['error'=>true , 'message' => 'Invalid records'];
@@ -83,6 +108,14 @@ class AuthController extends Controller
        return $response;
     }
 
+
+    /**
+     * 1. This function get email from input parameter
+     * 2. Match this email with database records 
+     * 3. If exist generate a toekn and send mail with endpoint and attached generated token with it
+     * @param Request $request
+     * @return Response $response
+     */
     public function forgotPassword(ForgotPasswordRequest $request)
     {
         $response = ['error' => true , 'message' => "Invalid email"];
@@ -99,6 +132,13 @@ class AuthController extends Controller
        return $response;
     }
 
+    /**
+     * 1. This function get token from url 
+     * 2. Check record against this token 
+     * 3. If exist then fetch user against this user and update its password with input password and also delete its token
+      * @param Request $request
+     * @return Response $response 
+     */
     public function resetPassword(ResetPasswordRequest $request)
     {
         $response = ['error' => true, 'message' => 'Invalid token or token expired'];
