@@ -23,9 +23,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             //
-            'first_name'  =>  'required|string|min:3|max:50',
-            'last_name'   =>  'required|string|min:3|max:50',
-            'email'       =>  'required|email',
+            'first_name'  =>  'string|min:3|max:50',
+            'last_name'   =>  'string|min:3|max:50',
+            'email'       =>  'email',
             'dob'         =>  'nullable|date_format:Y-m-d|before:today',
             'profile_pic' =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];

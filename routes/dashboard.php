@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,8 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::post('/SignUp', [AuthController::class,'signUp'])->name('sign_up');
-Route::post('/verify/account', [AuthController::class,'verifyAccount']);
-Route::post('/login', [AuthController::class,'login'])->name('login');
-Route::post('/forgot/password', [AuthController::class,'forgotPassword'])->name('forgot_password');
-Route::post('/reset/password', [AuthController::class,'resetPassword']);
+Route::post('/update/profile', [DashboardController::class, 'update_profile'])->middleware('auth.token');
