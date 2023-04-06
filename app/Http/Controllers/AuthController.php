@@ -153,4 +153,16 @@ class AuthController extends Controller
 
        return $response;
     }
+
+    public function showRegistrationForm()
+   {
+    //dd("ok");
+    return view('SignUp');
+   }
+
+   public function showLoginForm()
+   {
+    //dd("ok");
+    return view('Login');
+   }
 }
