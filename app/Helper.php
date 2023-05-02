@@ -3,15 +3,18 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
-class Helper
-{
-    public static function save_image_in_local_path($image)
+if(!function_exists('get_file_extension')){
+    function get_file_extension($file_content)
     {
-        $image_original_name= $image->getClientOriginalName();
-        $image_name= time().'.'.$image_original_name;
-        $file_path = str_replace('/', '\\', storage_path('app/public'));
-        file_put_contents($file_path.'/'.$image_name, file_get_contents($image));
-        return $image_name;
+        @list($type, $file_data) = explode(";",$file_content);
+        @list(, $type) = explode('/',$type);
+        @list(, $file_data) = explode(',', $file_data); 
+        $file_name = time().str::random(20).'.'.$type;
+        $file_content = base64_decode($file_data);
+        Storage::disk('local')->put($file_name, $file_content);
+        $file_path = Storage::path($file_name);
+        return $file_path;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Dashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\Base64FileWithExtension;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class UpdateRequest extends FormRequest
             'last_name'   =>  'string|min:3|max:50',
             'email'       =>  'email',
             'dob'         =>  'nullable|date_format:Y-m-d|before:today',
-            'profile_pic' =>  'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'profile_pic' =>  ['nullable',new Base64FileWithExtension(5000000)],
         ];
     }
 }

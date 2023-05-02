@@ -25,28 +25,32 @@ class User extends Authenticatable
         return $this->hasMany(User::class);
     }  
    
-    public static function create_user($request,$user_email,$user_image="",$role = 'is_user')
+    public static function create_user($first_name,$last_name,$user_email,$dob,$user_image=null,$role = 'is_user')
     {
       return  User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $user_email,
-            'dob' => $request->dob,
-            'profile_picture' => $user_image,
-            'password' => '',
+            'first_name'  => $first_name,
+            'last_name'   => $last_name,
+            'email'       => $user_email,
+            'dob'         => $dob,
+            'profile_pic' => $user_image,
+            'password'    => '',
             'email_verified_at' => false,
-            'role' => $role
+            'user_role' => $role
         ]);
     }
 
-    public static function update_user($user_id,$password)
+    public static function update_user_data($user_id,$updated_data)
     {
-        return User::where('id',$user_id)->update(['password'=>Hash::make($password),
-                                                    'email_verified_at'=> true ]);
+        return User::where('id',$user_id)->update($updated_data);
     }   
 
-    public static function find_user_by_email($user_email)
+    public static function get_user_data_by_email($user_email)
     {
         return User::where('email',$user_email)->first();
-    }  
+    } 
+    
+    public static function get_user_data_by_id($user_id)
+    {
+        return User::where('id',$user_id)->first();
+    }
 }

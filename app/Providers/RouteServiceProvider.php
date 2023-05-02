@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+       // dump('ök');
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -41,6 +42,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+               // dd('ök1');
         });
     }
 

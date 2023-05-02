@@ -6,6 +6,7 @@ use App\Models\Auth\Usertoken;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 use function PHPUnit\Framework\throwException;
 
@@ -20,14 +21,12 @@ class AuthToken
     {
         $token = data_get($request , 'token');
        $user_token = Usertoken::is_token_exist($token);
-       if(!empty($token)){
+       if(!empty($user_token)) {
         $user = $user_token->user;
-        $request->merge(['partner_user',$user]);
+        $request->merge(['user_data' => $user]);
         return $next($request);
        } else {
-        throwException("Invalid token");
+        throw new Exception("Invalid token");
        }
-        dd($user_token->user);
-        return $next($request);
     }
 }

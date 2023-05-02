@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/update/profile', [DashboardController::class, 'update_profile'])->middleware('auth.token');
+Route::post('/profile/view',[DashboardController::class,'get_user_data'])->middleware('auth.token');

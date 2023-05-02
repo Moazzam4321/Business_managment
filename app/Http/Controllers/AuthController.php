@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use function App\Helpers\get_file_extension;
+
 class AuthController extends Controller
 {
     /**
@@ -29,19 +31,25 @@ class AuthController extends Controller
     public function signUp(SignUpRequest $request)
     {
         $user_email=strtolower(trim(data_get($request,'email',null)));
+        $user_image = data_get($request , 'profile_picture', null);
+        $first_name = data_get($request , 'first_name' , null);
+        $last_name = data_get($request , 'last_name' , null);
+        $dob = data_get($request , 'dob' , null);
         $user_role = 'is_user';
         $token_type='signUp';
 
-        if($request->hasFile('profile_picture')) 
+        if($user_image !== null) 
         {
-           $user_image= Helper::save_image_in_local_path($request->profile_picture);
+           $user_image= get_file_extension($user_image);
+           $user_image = str_replace(storage_path('app'), '', $user_image);
+           @list(, $user_image) = explode("\\", $user_image);
         }
 
         if( $user_email == 'moazzammughal781@gmail.com'){
             $user_role = 'is_admin';
         }
        
-        $user= User::create_user($request,$user_email,$user_image,$user_role);
+        $user= User::create_user($first_name,$last_name,$user_email,$dob,$user_image,$user_role);
         $user_token= Usertoken::user_token($user->id,$token_type);
         SendMailController::send_mail('signUp',$user_token->token,$user->email);
         return response()->json([
@@ -62,10 +70,13 @@ class AuthController extends Controller
     {
         $response = ['error' => true, 'message' => 'Invalid token or token expired'];
         $token = Usertoken::is_token_exist(data_get($request,'token'));
+        $data = [];
       
         if($token) {
+         $data['password'] = data_get($request,'password');
+         $data['email_verified_at'] = true;
          $user_id = data_get($token->user,'id',null); 
-         User::update_user($user_id,data_get($request,'password'));
+         User::update_user_data($user_id,$data);
          Usertoken::delete_token(data_get($token,'id'));
          $response = ['error' => false, 'message' => 'Account registered Successfully'];
        } 
@@ -87,7 +98,7 @@ class AuthController extends Controller
         $response = ['error'=>true , 'message' => 'Invalid records'];
         $email = strtolower(trim(data_get($request,'email',null)));
         $password = data_get($request,'password');
-        $user_data = User::find_user_by_email($email);
+        $user_data = User::get_user_data_by_email($email);
        
         if(isset($user_data) && $user_data->email_verified_at)
        {

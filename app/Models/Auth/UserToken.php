@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class Usertoken extends Model
 {
     use HasFactory;
-    protected $table= 'user_tokens';
+    protected $table= 'user_token';
     protected $guarded = [];
 
     public function user() 
@@ -32,8 +32,9 @@ class Usertoken extends Model
 
     public static function is_token_exist($token)
     {
+      //dd("ok");
      return @Usertoken::where('token', $token)
-                      ->where('created_at','>=',Carbon::now()->subMinutes(60))->first();
+                      ->where('created_at','>=',Carbon::now()->subMinutes(18000))->first();
     }
 
     public static function delete_token($token_id)
