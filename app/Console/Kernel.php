@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use App\Models\Auth\Usertoken;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Carbon;
+//use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,6 +15,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->call(function () {
+            Usertoken::where('created_at', '<', Carbon::now()->subHours(10))->delete();
+        })->daily();
         // $schedule->command('inspire')->hourly();
     }
 
