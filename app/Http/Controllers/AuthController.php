@@ -55,6 +55,7 @@ class AuthController extends Controller
     
                    $user_token= Usertoken::user_token($user->id,$token_type);
                    SendMailController::send_mail('signUp',$user_token->token,$user->email);
+                   $response = ['error'=>false , 'message'=>"Mail send successfully for further verification"];
                } else {
                         $response = ['error'=> false , 'message'=> 'user already exist'];
                 }
@@ -81,7 +82,7 @@ class AuthController extends Controller
       
         if($token) {
          try{
-                $data['password'] = data_get($request,'password');
+                $data['password'] = Hash::make(data_get($request,'password'));
                 $data['email_verified_at'] = true;
                 $user_id = data_get($token->user,'id',null); 
                 User::update_user_data($user_id,$data);
