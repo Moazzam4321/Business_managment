@@ -18,14 +18,13 @@ class Base64FileWithExtension implements Rule
 
     public function passes($attribute, $value)
     {
-       $this->allowed_extensions = ['data:/png','data:/jpg','data:/jpeg'];
+       $this->allowed_extensions = ['data:/png','data:/jpg','data:/jpeg','data:@file/jpeg'];
        $file_data = explode(";",$value);
        $extension = $file_data[0];
        $file_content = base64_decode($value);
 
         // Get the file size
         $file_size = strlen($file_content);
-      // dump( $extension);
 
        if(!(in_array($extension, $this->allowed_extensions))){
         $this->message = "The :attribute must be a base64 encoded file with the following extensions: " . implode(', ', $this->allowed_extensions);

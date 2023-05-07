@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,10 +42,21 @@ class Handler extends ExceptionHandler
     /**
      * Register the exception handling callbacks for the application.
      */
-    public function register(): void
+    public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e) {
+            if ($e instanceof AccessDeniedHttpException) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'You are unauthorized to perform this action'
+                ], 403);
+            }
+            if($e instanceOf RuntimeException){
+                return response()->json([
+                    'error' => true,
+                    'message' => 'There is some error while connecting some external source'
+                ],500);
+            }
         });
     }
 }

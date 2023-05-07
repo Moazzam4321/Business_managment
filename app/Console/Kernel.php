@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
-            Usertoken::where('created_at', '<', Carbon::now()->subHours(10))->delete();
+            Usertoken::where('created_at', '>', Carbon::now()->subHours(10))->delete();
         })->daily();
         // $schedule->command('inspire')->hourly();
     }

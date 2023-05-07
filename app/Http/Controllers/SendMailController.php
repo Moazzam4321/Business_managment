@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendingMail;
-use Illuminate\Support\Str;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class SendMailController extends Controller
 {
     public static function send_mail($mail_type,$token,$user_email)
     {
+        try{
         if($mail_type == 'signUp') {
         $url=route('sign_up');
         $link="$url/$token";
@@ -19,5 +21,9 @@ class SendMailController extends Controller
             $link="$url/$token";
             SendingMail::dispatch($user_email,$mail_type,$link);
          }
+        } catch(Exception $e){
+            Log::error('Some issue while sending mail',['user_email',$user_email]);
+            return   $e->getMessage();
+        }
     }
 }

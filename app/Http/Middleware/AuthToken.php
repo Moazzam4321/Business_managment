@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
 
-use function PHPUnit\Framework\throwException;
-
 class AuthToken
 {
     /**
@@ -26,7 +24,7 @@ class AuthToken
         $request->merge(['user_data' => $user]);
         return $next($request);
        } else {
-        throw new Exception("Invalid token");
+        throw new Exception("Token expired");
        }
     }
 }
