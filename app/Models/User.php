@@ -32,10 +32,10 @@ class User extends Authenticatable
             'last_name'   => $last_name,
             'email'       => $user_email,
             'dob'         => $dob,
-            'profile_pic' => $user_image,
+            'profile_picture' => $user_image,
             'password'    => '',
             'email_verified_at' => false,
-            'user_role' => $role
+            'role' => $role
         ]);
     }
 

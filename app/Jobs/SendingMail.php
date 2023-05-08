@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\MailSent;
 use App\Mail\UserVerification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -39,5 +40,7 @@ class SendingMail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->email)->send(new UserVerification($this->subject,$this->link));
+         // Dispatch the MailSent event
+         event(new MailSent($this->email));
     }
 }

@@ -19,7 +19,7 @@ class AddItemRequest extends FormRequest
             $message = false;
             $user_id = data_get($request, 'user_data.id');
             $user_data = User::get_user_data_by_id($user_id);
-            $user_role = data_get($user_data,'user_role',null);
+            $user_role = data_get($user_data,'role',null);
             if($user_role == 'is_admin'){
                 $message = true;
             }
