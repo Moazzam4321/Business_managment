@@ -17,14 +17,17 @@ class AuthToken
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $token = data_get($request , 'token');
-       $user_token = Usertoken::is_token_exist($token);
-       if(!empty($user_token)) {
-        $user = $user_token->user;
-        $request->merge(['user_data' => $user]);
-        return $next($request);
+        $token = $request->header('Authorization');
+        $token = str_replace('Bearer ', '', $token);
+        $user_token = Usertoken::is_token_exist($token);
+    
+       if(!empty($user_token))
+        {
+            $user = $user_token->user;
+            $request->merge(['user_data' => $user]);
+            return $next($request);
        } else {
-        throw new Exception("Token expired");
+            throw new Exception("Token expired");
        }
     }
 }

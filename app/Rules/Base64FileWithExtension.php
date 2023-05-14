@@ -18,7 +18,7 @@ class Base64FileWithExtension implements Rule
 
     public function passes($attribute, $value)
     {
-       $this->allowed_extensions = ['data:/png','data:/jpg','data:/jpeg','data:@file/jpeg'];
+       $this->allowed_extensions = ['data:/png','data:/jpg','data:/jpeg','data:@file/jpeg','data:image/jpeg'];
        $file_data = explode(";",$value);
        $extension = $file_data[0];
        $file_content = base64_decode($value);

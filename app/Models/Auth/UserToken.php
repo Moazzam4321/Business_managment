@@ -32,8 +32,8 @@ class Usertoken extends Model
 
     public static function is_token_exist($token)
     {
-      //dd("ok");
-     return @Usertoken::where('token', $token)
+    
+     return Usertoken::where('token', $token)
                       ->where('created_at','>=',Carbon::now()->subMinutes(18000))->first();
     }
 

@@ -23,5 +23,17 @@ if(!function_exists('get_file_extension')){
         }catch(Exception $e){
             Log::warning('Unable to upload file',['user_email'=> $user_email]);
         }
+    }  
+}
+
+if(!function_exists('get_base64_data')){
+    function get_base64_data($request)
+    {
+         $contents = file_get_contents($request->profile_picture->getRealPath());
+        $base64 = base64_encode($contents);
+        $mime_type = $request->profile_picture->getMimeType();
+        $data = 'data:'.$mime_type.';base64,'.$base64;
+        unset($request['profile_picture']);
+        $request->merge(['profile_pic'=>$data]);
     }
 }

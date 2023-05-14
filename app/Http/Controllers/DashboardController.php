@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Dashboard\AddItemRequest;
+use App\Http\Requests\Dashboard\UpdateItemRequest;
 use App\Http\Requests\Dashboard\UpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Models\Item;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use function App\Helpers\get_file_extension;
@@ -73,11 +75,34 @@ class DashboardController extends Controller
             {
                 $item_pic= get_file_extension($item_pic);
             }
-             Item::create_item($item_name,$item_type,$item_price,$item_description,$item_pic);
+            
+            Item::create_item($item_name,$item_type,$item_price,$item_description,$item_pic);
         } catch (Exception $e){
             Log::critical('Something went wrong while adding item',['user_id'=>$user_id]);
             $response = null;
         }
           return $response;
+    }
+
+    public function update_item(UpdateItemRequest $request)
+    {
+        $response = ['erorr'=>true , 'message'=> 'Some issue found while updating data'];
+        try{
+            $response = ['erorr'=>false , 'message'=> 'Item added successfully'];
+            $item_id = data_get($request , 'item_id',null);
+
+            $update_data = [];
+            $existing_fields = ['item_name','item_type','item_price','item_description','item_pic'];
+
+            foreach ($existing_fields as $existing_field){
+                if($request->has($existing_field)){
+                    $update_data[] =  $request->existing_field;
+                }
+            }
+
+            DB::select('items')->where('item_id',$item_id)->update($update_data);
+        } catch (Exception $e){
+            return $response;
+        }
     }
 }

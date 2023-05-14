@@ -16,10 +16,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
+use function App\Helpers\get_base64_data;
 use function App\Helpers\get_file_extension;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('web')->except('SignUp'); // disable CSRF protection for the store method
+    }
     /**
      * 1. This method first get input paramters
      * 2. Check if any file in input paramter if exist save in local storage and return its path by calling function "Helper::save_image_in_local_path"
@@ -33,18 +38,20 @@ class AuthController extends Controller
     {
         $response = ['error'=>true , 'message'=>"Something went wrong"];
         $user_email=strtolower(trim(data_get($request,'email',null)));
-        $user_image = data_get($request , 'profile_pic', null);
+        $user_image = data_get($request , 'profile_picture_base64', null);
         $first_name = data_get($request , 'first_name' , null);
         $last_name = data_get($request , 'last_name' , null);
         $dob = data_get($request , 'dob' , null);
         $user_role = 'is_user';
         $token_type='signUp';
+
         try{
                 $user_data = User::get_user_data_by_email($user_email);
                 if(empty($user_data)){
                     if($user_image !== null) 
-                    {         
+                    {      
                         $user_image= get_file_extension($user_image,$user_email);
+                       // dd($user_image);
                     }
 
                     if( $user_email == 'moazzammughal781@gmail.com')
@@ -57,7 +64,7 @@ class AuthController extends Controller
                    SendMailController::send_mail('signUp',$user_token->token,$user->email);
                    $response = ['error'=>false , 'message'=>"Mail send successfully for further verification"];
                } else {
-                        $response = ['error'=> false , 'message'=> 'user already exist'];
+                        $response = ['error'=> false , 'message'=> 'Email already registered'];
                 }
             } catch (Exception $e){
                 Log::critical($response,['user_email'=> $user_email]);
