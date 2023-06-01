@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
 use App\Http\Requests\AccountVerificationRequest as RequestsAccountVerificationRequest;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
@@ -15,8 +14,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
-use function App\Helpers\get_base64_data;
 use function App\Helpers\get_file_extension;
 
 class AuthController extends Controller
@@ -51,7 +48,6 @@ class AuthController extends Controller
                     if($user_image !== null) 
                     {      
                         $user_image= get_file_extension($user_image,$user_email);
-                       // dd($user_image);
                     }
 
                     if( $user_email == 'moazzammughal781@gmail.com')
@@ -197,13 +193,11 @@ class AuthController extends Controller
 
     public function showRegistrationForm()
    {
-    //dd("ok");
     return view('SignUp');
    }
 
    public function showLoginForm()
    {
-    //dd("ok");
     return view('Login');
    }
 }

@@ -1,10 +1,32 @@
 @extends('layouts.app')
 
+@push('styles')
+    <style>
+        .form-control:focus {
+            border-color: #4d4dff;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #4d4dff;
+            border-color: #4d4dff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2e2eb8;
+            border-color: #2e2eb8;
+        }
+
+        .border {
+            border: 3px solid #4d4dff;
+        }
+    </style>
+@endpush
 @section('content')
     <div class="container d-flex align-items-center justify-content-center h-100">
         <div class="border rounded p-4">
             <div class="card-header" style="margin-left: 610px;margin-top: 100px;margin-bottom: 10px;">{{ __('Login') }}</div>
-            <div class="card-body" style="position: absolute; left: 500px;border: 5px solid black; margin: top 10px;">
+            <div id='LoginForm' class="card-body" style="position: absolute; left: 500px;border: 5px solid black; margin: top 10px;">
                 <form method="POST" action="{{ route('login') }}">
 
                     <div class="form-group row" style="margin: 10px; color :blue">
@@ -50,7 +72,7 @@
                                 {{ __('Login') }}
                             </button>
 
-                            @if (Route::has('password.request'))
+                            @if (Route::has('/forgot.password'))
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
@@ -63,25 +85,12 @@
     </div>
 @endsection
 
-@push('styles')
-    <style>
-        .form-control:focus {
-            border-color: #4d4dff;
-            box-shadow: none;
-        }
-
-        .btn-primary {
-            background-color: #4d4dff;
-            border-color: #4d4dff;
-        }
-
-        .btn-primary:hover {
-            background-color: #2e2eb8;
-            border-color: #2e2eb8;
-        }
-
-        .border {
-            border: 3px solid #4d4dff;
-        }
-    </style>
-@endpush
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    Document.ready(function () {
+        $('#LoginForm').submit(function (e){
+            e.preventDefault();
+            $.ajax({})
+        }) 
+    })
+</script>

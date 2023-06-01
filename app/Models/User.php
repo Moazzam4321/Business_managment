@@ -18,7 +18,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    // protected $guarded = [];
+   // protected $fillable = ['id'];
+//    protected $rules = [
+//     'attribute1' => 'required',
+//     'attribute2' => 'numeric|min:0'
+// ];
 
     public function tokens()
     {

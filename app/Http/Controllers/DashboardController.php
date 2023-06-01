@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $user_data= new UserResource($user_data);
         $response = ['error' => false , 'data'=> $user_data];  
         } catch (Exception $e){
-            Log::emergency('Something went wrong',['user_id'=>$user_id]);
+            Log::emetrgency('Something went wrong',['user_id'=>$user_id]);
             return $response ;
         }        
         return response()->json($response);
@@ -100,7 +100,7 @@ class DashboardController extends Controller
                 }
             }
 
-            DB::select('items')->where('item_id',$item_id)->update($update_data);
+            DB::table('items')->where('item_id',$item_id)->update($update_data);
         } catch (Exception $e){
             return $response;
         }

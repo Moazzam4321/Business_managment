@@ -151,13 +151,11 @@ $(document).ready(function() {
             contentType: false,
             success: function(response) {
                 // display the response message in an alert box
-                console.log("ok");
                 alert(response.message);
             },
             error: function(xhr, status, error) {
                 // display the error message in the alert box
                 var errorMessage = 'Error: ' + xhr.status + ' ' + xhr.statusText + '\n' + xhr.responseText;
-                console.log("ok1");
                 var alertBox = $('<div>').addClass('alert alert-danger').text(errorMessage);
                 var closeButton = $('<button>').addClass('btn btn-primary').text('Close');
                 alertBox.append(closeButton);
