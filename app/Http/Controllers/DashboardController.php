@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $user_data= new UserResource($user_data);
         $response = ['error' => false , 'data'=> $user_data];  
         } catch (Exception $e){
-            Log::emetrgency('Something went wrong',['user_id'=>$user_id]);
+            Log::emergency('Something went wrong',['user_id'=>$user_id]);
             return $response ;
         }        
         return response()->json($response);

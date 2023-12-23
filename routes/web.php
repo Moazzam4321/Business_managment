@@ -15,9 +15,10 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Home');
 });
 
 Route::get('/register', [AuthController::class,'showRegistrationForm'])->name('register');
 Route::get('/Loginview', [AuthController::class,'showLoginForm']);
+Route::view('admin', 'admin.Dashboard');
 

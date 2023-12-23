@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@yield('title')</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminlte/adminlte.css') }}">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar, sidebar, and content sections go here -->
+    </div>
 
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
-    </head>
-    <body>
-        <nav>
-            <!-- your navigation menu code here -->
-        </nav>
-
-        <div class="container">
-            @yield('content')
-        </div>
-
-        <footer>
-            <!-- your footer code here -->
-        </footer>
-    </body>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/adminlte/adminlte.js') }}"></script>
+</body>
 </html>
